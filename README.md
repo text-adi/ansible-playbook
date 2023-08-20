@@ -49,3 +49,5 @@ ansible-galaxy install -r requirements.yml
 ansible-playbook playbooks/<name-playbook>.yml
 ```
 
+Після чого, ansible запитає пароль до сервера, до якого відбувається підключення.
+
