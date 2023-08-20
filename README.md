@@ -19,7 +19,7 @@
 
 Для завантаження проєкту із github, виконуємо команду в терміналі:
 ```shell
-git clone ...
+git clone https://github.com/text-adi/ansible-playbook.git
 ```
 
 ## Встановлення залежностей
@@ -46,6 +46,6 @@ ansible-galaxy install -r requirements.yml
 Для запуску відповідного playbook в корні проєкту, виконуємо команду в терміналі:
 
 ```shell
-ansible-playbook  playbooks/<name-playbook>.yml
+ansible-playbook playbooks/<name-playbook>.yml
 ```
 
