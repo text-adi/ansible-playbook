@@ -15,19 +15,19 @@
   when: ansible_facts['lsb']['id']|lower == 'ubuntu'
 
 - name: Install required python package for docker-compose
-  ansible.builtin.pip:
+  pip:
     name: "{{ item }}"
   loop:
     - docker-compose
 
 - name: Run docker and add to autostart
-  ansible.builtin.systemd:
+  systemd:
     name: docker.socket
     state: started
     enabled: true
 
 - name: Check Docker installation
-  ansible.builtin.command: "docker --version"
+  command: "docker --version"
   register: docker_version_output
   ignore_errors: true  # To handle the case when Docker is not installed
 

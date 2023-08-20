@@ -1,21 +1,21 @@
 - name: Debug message
-  ansible.builtin.debug:
+  debug:
     msg: "Run on RedHat - name OS: {{ ansible_facts['lsb']['id'] }}"
 
 - name: Install yum-utils
-  ansible.builtin.yum:
+  yum:
     name: "{{ item }}"
     state: present # якщо пакет встановлений, не оновлювати
   loop:
     - yum-utils
 
 - name: Add Docker repository
-  ansible.builtin.shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   args:
     executable: /bin/bash
 
 - name: Install docker
-  ansible.builtin.yum:
+  yum:
     name: "{{ item }}"
     state: present # якщо пакет встановлений, не оновлювати
     update_cache: true
@@ -28,7 +28,7 @@
 
 # For docker-compose
 - name: Install required packages
-  ansible.builtin.yum:
+  yum:
     name: "{{ item }}"
     state: present
   loop:

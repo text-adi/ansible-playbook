@@ -1,9 +1,9 @@
 - name: Debug message
-  ansible.builtin.debug:
+  debug:
     msg: "Run on family Debian - name OS: {{ ansible_facts['lsb']['id'] }}"
 
 - name: Install required packages
-  ansible.builtin.apt:
+  apt:
     name: "{{ item }}"
     state: present # якщо пакет встановлений, не оновлювати
     update_cache: true
@@ -13,30 +13,30 @@
     - gnupg
 
 - name: Create directory for keyrings
-  ansible.builtin.file:
+  file:
     path: /etc/apt/keyrings
     state: directory
     mode: '0755'
 
 - name: Download Docker GPG key and save to keyring directory
-  ansible.builtin.shell: "curl -fsSL https://download.docker.com/linux/{{ repository_prefix }}/gpg | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg"
+  shell: "curl -fsSL https://download.docker.com/linux/{{ repository_prefix }}/gpg | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg"
   args:
     executable: /bin/bash
 
 - name: Change permissions of Docker GPG key
-  ansible.builtin.file:
+  file:
     path: /etc/apt/keyrings/docker.gpg
     mode: '0644'
 
 - name: Add Docker repository to sources.list
-  ansible.builtin.shell: >
+  shell: >
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/{{ repository_prefix }} $(. /etc/os-release && echo $VERSION_CODENAME) stable" |
     tee /etc/apt/sources.list.d/docker.list > /dev/null
   args:
     executable: /bin/bash
 
 - name: Install docker
-  ansible.builtin.apt:
+  apt:
     name: "{{ item }}"
     state: present # якщо пакет встановлений, не оновлювати
     update_cache: true
@@ -49,7 +49,7 @@
 
 # For docker-compose
 - name: Install required packages
-  ansible.builtin.apt:
+  apt:
     name: "{{ item }}"
     state: present
   loop:
