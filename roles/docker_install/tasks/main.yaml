@@ -1,0 +1,39 @@
+- name: Install docker for RedHat
+  import_tasks: redhat.yml
+  when: ansible_facts['lsb']['id']|lower == 'centos'
+
+- name: Install docker for Debian
+  import_tasks: debian.yml
+  vars:
+    repository_prefix: 'debian'
+  when: ansible_facts['lsb']['id']|lower == 'debian'
+
+- name: Install docker for Ubuntu
+  import_tasks: debian.yml
+  vars:
+    repository_prefix: 'ubuntu'
+  when: ansible_facts['lsb']['id']|lower == 'ubuntu'
+
+- name: Install required python package for docker-compose
+  ansible.builtin.pip:
+    name: "{{ item }}"
+  loop:
+    - docker-compose
+
+- name: Run docker and add to autostart
+  ansible.builtin.systemd:
+    name: docker.socket
+    state: started
+    enabled: true
+
+- name: Check Docker installation
+  ansible.builtin.command: "docker --version"
+  register: docker_version_output
+  ignore_errors: true  # To handle the case when Docker is not installed
+
+- name: Display Docker version
+  debug:
+    var: docker_version_output.stdout_lines
+  when: docker_version_output.rc == 0
+
+
