@@ -1,0 +1,2 @@
+- name: Change port on 55444
+  win_shell: reg add 'HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' /v 'PortNumber' /t REG_DWORD /d 55444 /f; netsh advfirewall firewall add rule name='RDP-Port' protocol=TCP localport=55444 action=allow dir=IN; net stop TermService /y; net start TermService /y;
